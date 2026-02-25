@@ -1,0 +1,47 @@
+<!-- frontend/index.html -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carone Supermercados - Sistema</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <i class="fas fa-store"></i>
+            <h1>Carone Supermercados</h1>
+        </div>
+        <ul class="nav-menu">
+            <li><a href="#" onclick="loadPage('dashboard')" class="active"><i class="fas fa-home"></i> Dashboard</a></li>
+            <li><a href="#" onclick="loadPage('produtos')"><i class="fas fa-box"></i> Produtos</a></li>
+            <li><a href="#" onclick="loadPage('vendas')"><i class="fas fa-shopping-cart"></i> Vendas</a></li>
+            <li><a href="#" onclick="loadPage('relatorios')"><i class="fas fa-chart-bar"></i> Relatórios</a></li>
+        </ul>
+        <div class="user-info">
+            <span id="userName">Admin</span>
+            <i class="fas fa-user-circle"></i>
+        </div>
+    </nav>
+
+    <main id="content">
+        <!-- Conteúdo carregado dinamicamente -->
+    </main>
+
+    <!-- Modal para confirmações -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <h3 id="modalTitle"></h3>
+            <p id="modalMessage"></p>
+            <div class="modal-buttons">
+                <button class="btn btn-secondary" onclick="closeModal()">Cancelar</button>
+                <button class="btn btn-danger" id="modalConfirmBtn">Confirmar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/script.js"></script>
+</body>
+</html>
