@@ -1,0 +1,16 @@
+# Criar .gitignore
+echo "node_modules/
+.env
+.DS_Store
+*.log
+dist/
+coverage/
+.vscode/
+.idea/
+*.pid
+*.seed
+*.pid.lock
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+" > .gitignore

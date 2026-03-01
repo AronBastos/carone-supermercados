@@ -1,0 +1,60 @@
+# backend/Dockerfile
+
+# Estágio 1: Builder
+FROM node:18-alpine AS builder
+
+WORKDIR /app
+
+# Copiar arquivos de dependência
+COPY package*.json ./
+
+# Instalar dependências (incluindo devDependencies para build)
+RUN npm ci
+
+# Copiar código fonte
+COPY . .
+
+# Estágio 2: Produção
+FROM node:18-alpine
+
+# Instalar dependências do sistema necessárias para algumas libs
+RUN apk add --no-cache \
+    python3 \
+    make \
+    g++ \
+    git \
+    curl \
+    && rm -rf /var/cache/apk/*
+
+# Criar usuário não-root para segurança
+RUN addgroup -g 1001 -S nodejs && \
+    adduser -S nodejs -u 1001
+
+WORKDIR /app
+
+# Copiar package.json e package-lock.json
+COPY package*.json ./
+
+# Instalar apenas dependências de produção
+RUN npm ci --only=production && \
+    npm cache clean --force
+
+# Copiar código da aplicação do estágio builder
+COPY --from=builder --chown=nodejs:nodejs /app ./
+
+# Criar diretório para logs com permissões corretas
+RUN mkdir -p /app/logs && \
+    chown -R nodejs:nodejs /app
+
+# Mudar para usuário não-root
+USER nodejs
+
+# Expor porta da aplicação
+EXPOSE 3000
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+    CMD curl -f http://localhost:3000/api/health || exit 1
+
+# Comando para iniciar a aplicação
+CMD ["node", "server.js"]

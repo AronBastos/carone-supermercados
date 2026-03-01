@@ -1,0 +1,30 @@
+# backend/Dockerfile.dev
+
+FROM node:18-alpine
+
+WORKDIR /app
+
+# Instalar dependências do sistema
+RUN apk add --no-cache \
+    python3 \
+    make \
+    g++ \
+    git
+
+# Instalar nodemon globalmente para hot-reload
+RUN npm install -g nodemon
+
+# Copiar dependências
+COPY package*.json ./
+
+# Instalar todas as dependências (incluindo dev)
+RUN npm install
+
+# Copiar código fonte
+COPY . .
+
+# Expor porta
+EXPOSE 3000
+
+# Comando com hot-reload
+CMD ["nodemon", "server.js"]
